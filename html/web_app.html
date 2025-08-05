@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Snake Game</title><link rel="stylesheet" href="../css/snake_style.css">
+</head>
+<body>
+ <h1 class="header">Snake Game</h1>
+
+  
+<div id="gameContainer">
+  <!-- Set score box -->
+  <div class="score-panel">
+    Score: <span id="score">0</span>
+  </div>
+
+  <!-- Set up game dimensions -->
+  <canvas id="game" width="400" height="400"></canvas>
+  </div>
+  
+<script>
+  const canvas = document.getElementById("game");
+  const ctx = canvas.getContext("2d");
+  const box = 20;
+  let snake = [{ x: 100, y: 100 }];
+  let direction = "right";
+  let food = {
+    x: Math.floor(Math.random() * 20) * box,
+    y: Math.floor(Math.random() * 20) * box,
+  };
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "ArrowUp" && direction !== "down") direction = "up";
+    else if (e.key === "ArrowDown" && direction !== "up") direction = "down";
+    else if (e.key === "ArrowLeft" && direction !== "right") direction = "left";
+    else if (e.key === "ArrowRight" && direction !== "left") direction = "right";
+  });
+
+  // Draw the snake
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < snake.length; i++) {
+      ctx.fillStyle = i === 0 ? "#59FFB4" : "#3DAE7B";
+      ctx.fillRect(snake[i].x, snake[i].y, box, box);
+    }
+    ctx.fillStyle = "#FF147E";
+    ctx.fillRect(food.x, food.y, box, box);
+    let head = { ...snake[0] };
+    if (direction === "up") head.y -= box;
+    else if (direction === "down") head.y += box;
+    else if (direction === "left") head.x -= box;
+    else if (direction === "right") head.x += box;
+
+    snake.unshift(head);
+
+    // When snake eats apple
+    if (head.x === food.x && head.y === food.y) {
+      food = {
+        x: Math.floor(Math.random() * 20) * box,
+        y: Math.floor(Math.random() * 20) * box,
+      };
+      eatApple();
+    } else {
+      snake.pop();
+    }
+
+    if (
+      head.x < 0 || head.y < 0 ||
+      head.x >= canvas.width || head.y >= canvas.height ||
+      snake.slice(1).some(s => s.x === head.x && s.y === head.y)
+    ) {
+      gameOver();
+    }
+  }
+
+  // Add one to score
+  function eatApple() {
+    score += 1;
+    document.getElementById("score").textContent = score;
+  }
+
+  // End game and restart functions
+  function gameOver() {
+    document.getElementById("gameContainer").style.display = "none";
+    document.getElementById("endScreen").style.display = "block";
+    document.getElementById("finalScore").textContent = score;
+  }
+
+  function restartGame() {
+    document.getElementById("endScreen").style.display = "none";
+    document.getElementById("gameContainer").style.display = "block";
+    snake = [{ x: 200, y: 200 }];
+    direction = "right";
+    score = 0;
+    document.getElementById("score").textContent = score;
+    food = {
+      x: Math.floor(Math.random() * 20) * box,
+      y: Math.floor(Math.random() * 20) * box,
+    };
+  }
+
+  let score = 0;
+  setInterval(draw, 100);
+</script>
+
+<!-- set up end screen -->
+<div id="endScreen" style="display: none;">
+  <h1>Game Over</h1>
+  <p>Your score: <span id="finalScore">0</span></p>
+  <button onclick="restartGame()">Try Again</button>
+</div>
+
+</body>
+</html>

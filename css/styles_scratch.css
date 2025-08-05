@@ -1,0 +1,57 @@
+
+body {
+background-color: rgb(61, 222, 203);
+font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+p {
+    font-weight: bold;
+}
+
+.gold {
+    color: gold;
+}
+
+ul {
+    font-style: italic;
+    color: black;
+}
+
+.justify {
+    text-align: justify;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.header {
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    height: 150px;
+    z-index: 2;
+}
+
+.leftmenu {
+    top: 80px;
+    left: 200px;
+    width: 150px;
+    bottom: 39px;
+    z-index: 1;
+    padding-top: 40px;
+}
+
+.mainbody {
+    position: absolute;
+    top: 160px;
+    left: 450px;
+    right: 114px;
+    bottom: 39px;
+    padding-right: 5px;
+}
+
+a:hover {
+    font-size: 20px;
+}
+
